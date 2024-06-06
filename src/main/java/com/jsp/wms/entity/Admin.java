@@ -2,7 +2,7 @@ package com.jsp.wms.entity;
 
 import java.util.List;
 
-import com.jsp.wms.Privileges.AdminPrivileges;
+import com.jsp.wms.enums.AdminPrivileges;
 import com.jsp.wms.enums.AdminType;
 
 import jakarta.persistence.Entity;

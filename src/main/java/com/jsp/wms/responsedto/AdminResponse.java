@@ -1,6 +1,6 @@
 package com.jsp.wms.responsedto;
 
-import com.jsp.wms.Privileges.AdminPrivileges;
+import com.jsp.wms.enums.AdminPrivileges;
 import com.jsp.wms.enums.AdminType;
 
 import lombok.AllArgsConstructor;

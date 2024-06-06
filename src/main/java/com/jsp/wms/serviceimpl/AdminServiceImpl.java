@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.jsp.wms.Privileges.AdminPrivileges;
 import com.jsp.wms.entity.Admin;
+import com.jsp.wms.enums.AdminPrivileges;
 import com.jsp.wms.enums.AdminType;
 import com.jsp.wms.exception.IllegalOperationException;
 import com.jsp.wms.mapper.AdminMapper;

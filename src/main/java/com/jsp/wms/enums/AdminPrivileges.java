@@ -1,4 +1,4 @@
-package com.jsp.wms.Privileges;
+package com.jsp.wms.enums;
 
 public enum AdminPrivileges {
 	CREATED_ADMIN,

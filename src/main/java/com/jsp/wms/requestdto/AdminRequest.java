@@ -2,7 +2,7 @@ package com.jsp.wms.requestdto;
 
 import java.util.List;
 
-import com.jsp.wms.Privileges.AdminPrivileges;
+import com.jsp.wms.enums.AdminPrivileges;
 import com.jsp.wms.enums.AdminType;
 
 import lombok.Getter;

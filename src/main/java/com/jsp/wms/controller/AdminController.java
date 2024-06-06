@@ -16,7 +16,7 @@ import com.jsp.wms.util.ResponseStructure;
 public class AdminController {
 	@Autowired
 	AdminService adminService;
-	@PostMapping("/admin")
+	@PostMapping("/register")
 	public ResponseEntity<ResponseStructure<AdminResponse>> addAdmin(@RequestBody AdminRequest adminRequest){
 		return adminService.addAdmin(adminRequest);
 	}
