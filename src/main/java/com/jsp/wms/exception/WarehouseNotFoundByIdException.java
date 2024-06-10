@@ -6,6 +6,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class IllegalOperationException extends RuntimeException {
-private String message;
+public class WarehouseNotFoundByIdException extends RuntimeException {
+ private String message;
 }
