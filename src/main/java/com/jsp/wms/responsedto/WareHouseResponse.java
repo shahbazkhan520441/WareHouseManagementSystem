@@ -14,5 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class WareHouseResponse {
+	private int wareHouseId;
 	private String wareHouseName;
 }
