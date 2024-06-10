@@ -40,4 +40,10 @@ public class AdminServiceImpl implements AdminService {
 						.setData(adminMapper.mapToAdminResponse(admin)));
 	}
 
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(AdminRequest adminRequest) {
+		return null;
+	}
+
 }

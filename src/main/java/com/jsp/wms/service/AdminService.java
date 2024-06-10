@@ -10,4 +10,6 @@ import com.jsp.wms.util.ResponseStructure;
 public interface AdminService {
 	public ResponseEntity<ResponseStructure<AdminResponse>> addAdmin(AdminRequest adminRequest);
 
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(AdminRequest adminRequest);
+
 }
