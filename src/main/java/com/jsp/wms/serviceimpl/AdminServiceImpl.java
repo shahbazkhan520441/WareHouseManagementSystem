@@ -16,6 +16,7 @@ import com.jsp.wms.entity.Admin;
 import com.jsp.wms.entity.WareHouse;
 import com.jsp.wms.enums.AdminPrivileges;
 import com.jsp.wms.enums.AdminType;
+import com.jsp.wms.exception.AdminNotFoundByEmail;
 import com.jsp.wms.exception.IllegalOperationException;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.mapper.AdminMapper;
@@ -79,13 +80,13 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(AdminRequest adminRequest) {
 		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		return  adminRepository.findByAdminEmail(username).map(exAdmin->{
+		String email = authentication.getName();//username
+		return  adminRepository.findByAdminEmail(email).map(exAdmin->{
 			 Admin admin=adminMapper.mapToAdmin(adminRequest, exAdmin);
 		
-		admin.setAdminEmail(adminRequest.getAdminEmail());
-		admin.setAdminName(adminRequest.getAdminName());
-		admin.setAdminPassword(adminRequest.getAdminPassword());
+//		admin.setAdminEmail(adminRequest.getAdminEmail());
+//		admin.setAdminName(adminRequest.getAdminName());
+//		admin.setAdminPassword(adminRequest.getAdminPassword());
 		exAdmin=adminRepository.save(admin);
 		
 		return  ResponseEntity.status(HttpStatus.OK)
@@ -94,7 +95,7 @@ public class AdminServiceImpl implements AdminService {
 						.setMessage("admin updated")
 						.setData(adminMapper.mapToAdminResponse(exAdmin)));
 		
-		}).orElseThrow(()->new IllegalOperationException("invalid user name or password"));
+		}).orElseThrow(()->new AdminNotFoundByEmail("invalid user name (EMAIL) OR  password"));
 		
 	}
 
