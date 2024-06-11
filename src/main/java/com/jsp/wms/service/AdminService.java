@@ -1,5 +1,7 @@
 package com.jsp.wms.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.wms.entity.Admin;
@@ -18,5 +20,6 @@ public interface AdminService {
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(AdminRequest adminRequest);
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminBySuperAdmin(AdminRequest adminRequest, int adminId);
 	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(Integer adminId);
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAllAdmin( );
 
 }

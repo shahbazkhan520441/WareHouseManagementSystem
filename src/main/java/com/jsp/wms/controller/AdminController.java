@@ -1,5 +1,7 @@
 package com.jsp.wms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,6 +50,10 @@ public class AdminController {
 	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(@PathVariable Integer adminId){
 		return  adminService.findAdmin(adminId);
 		
+	}
+	@GetMapping("/admins")
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAllAdmin(){
+		return adminService.findAllAdmin();
 	}
 	
 

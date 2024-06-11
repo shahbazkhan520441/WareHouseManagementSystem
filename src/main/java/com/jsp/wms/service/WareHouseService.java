@@ -13,4 +13,6 @@ public interface WareHouseService {
 	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWareHouse(WareHouseRequest wareHouseRequest,
 			int wareHouseId);
 
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> findWareHouse(Integer wareHouseId);
+
 }
