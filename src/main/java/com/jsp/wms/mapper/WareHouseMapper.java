@@ -16,7 +16,8 @@ public class WareHouseMapper {
 	public WareHouseResponse mapTowareHouseResponse(WareHouse wareHouse) {
 		return WareHouseResponse.builder()
 			.wareHouseId(wareHouse.getWareHouseId())
-			.wareHouseName(wareHouse.getWareHouseName())
+			.wareHouseName(wareHouse.getWareHouseName()
+					).totalCapacity(0)
 				.build();
 	}
 
