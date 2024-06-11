@@ -38,6 +38,11 @@ public class AdminController {
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(@RequestBody AdminRequest adminRequest){
 		return adminService. updateAdmin(adminRequest);
 	}
+	@PreAuthorize("hasAuthority('UPDATE_ADMIN')")
+	@PutMapping("/admins/{adminId}")
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminBySuperAdmin(@RequestBody AdminRequest adminRequest,@PathVariable Integer adminId){
+		return adminService.updateAdminBySuperAdmin(adminRequest,adminId);
+	}
 	
 
 	
