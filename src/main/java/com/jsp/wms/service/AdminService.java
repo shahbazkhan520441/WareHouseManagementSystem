@@ -17,5 +17,6 @@ public interface AdminService {
 			Integer wareHouseId);
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(AdminRequest adminRequest);
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminBySuperAdmin(AdminRequest adminRequest, int adminId);
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(Integer adminId);
 
 }

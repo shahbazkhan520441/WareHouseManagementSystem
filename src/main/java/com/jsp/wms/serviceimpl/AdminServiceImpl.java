@@ -17,6 +17,7 @@ import com.jsp.wms.entity.WareHouse;
 import com.jsp.wms.enums.AdminPrivileges;
 import com.jsp.wms.enums.AdminType;
 import com.jsp.wms.exception.AdminNotFoundByEmail;
+import com.jsp.wms.exception.AdminNotFoundByIdException;
 import com.jsp.wms.exception.IllegalOperationException;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.mapper.AdminMapper;
@@ -114,6 +115,18 @@ public class AdminServiceImpl implements AdminService {
 						.setData(adminMapper.mapToAdminResponse(exadmin)));
 		
 		}).orElseThrow(()->new AdminNotFoundByEmail("invalid user name (EMAIL) OR  password"));
+	}
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(Integer adminId) {
+	  return adminRepository.findById(adminId).map(admin-> ResponseEntity.status(HttpStatus.FOUND)
+						  .body(new ResponseStructure<AdminResponse>()
+								  .setStatus(HttpStatus.OK.value())
+								  .setMessage("admin found ")
+								  .setData(adminMapper.mapToAdminResponse(admin))
+			           )).orElseThrow(() -> new AdminNotFoundByIdException("invalid admin id"));
+	  
 	}
 
 
