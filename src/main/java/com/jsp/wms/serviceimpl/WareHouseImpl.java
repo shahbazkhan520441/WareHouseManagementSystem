@@ -11,9 +11,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.jsp.wms.entity.WareHouse;
+import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.mapper.WareHouseMapper;
 import com.jsp.wms.repository.WareHouseRepository;
 import com.jsp.wms.requestdto.WareHouseRequest;
+import com.jsp.wms.responsedto.AdminResponse;
 import com.jsp.wms.responsedto.WareHouseResponse;
 import com.jsp.wms.service.WareHouseService;
 import com.jsp.wms.util.ResponseStructure;
@@ -49,5 +51,21 @@ public class WareHouseImpl implements WareHouseService {
 		            
 	 
 	}
+	@Override
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWareHouse(WareHouseRequest wareHouseRequest,
+			int wareHouseId) {
+		return wareHouseRepository.findById(wareHouseId).map(exwareHouse->{
+		WareHouse warehouse=wareHouseMapper.mapToWareHouse(wareHouseRequest, exwareHouse);
+		exwareHouse=wareHouseRepository.save(warehouse);
+		 return  ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseStructure<WareHouseResponse>()
+						.setStatus(HttpStatus.OK.value())
+						.setMessage("warehouse updated")
+						.setData(wareHouseMapper.mapTowareHouseResponse(exwareHouse)));
+		
+		}).orElseThrow(()->new WarehouseNotFoundByIdException("warehouse not found by given id") );
+		}
 
-}
+	}
+
+
