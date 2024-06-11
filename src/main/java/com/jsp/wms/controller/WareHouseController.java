@@ -33,4 +33,8 @@ public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(@Req
 public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWareHouse(@RequestBody WareHouseRequest wareHouseRequest,@PathVariable int wareHouseId){
 	return wareHouseService.updateWareHouse(wareHouseRequest,wareHouseId);
 }
+@GetMapping("/warehouses/{wareHouseId}")
+public ResponseEntity<ResponseStructure<WareHouseResponse>> findWareHouse(@PathVariable Integer wareHouseId){
+	return wareHouseService.findWareHouse(wareHouseId);
+}
 }
