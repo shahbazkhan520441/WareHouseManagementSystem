@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.jsp.wms.entity.Admin;
@@ -71,6 +73,29 @@ public class AdminServiceImpl implements AdminService {
 									.setData(adminMapper.mapToAdminResponse(admin)));
 		}).orElseThrow(()-> new WarehouseNotFoundByIdException("Not found"));
 	
+	}
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(AdminRequest adminRequest) {
+		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		return  adminRepository.findByAdminEmail(username).map(exAdmin->{
+			 Admin admin=adminMapper.mapToAdmin(adminRequest, exAdmin);
+		
+		admin.setAdminEmail(adminRequest.getAdminEmail());
+		admin.setAdminName(adminRequest.getAdminName());
+		admin.setAdminPassword(adminRequest.getAdminPassword());
+		exAdmin=adminRepository.save(admin);
+		
+		return  ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseStructure<AdminResponse>()
+						.setStatus(HttpStatus.OK.value())
+						.setMessage("admin updated")
+						.setData(adminMapper.mapToAdminResponse(exAdmin)));
+		
+		}).orElseThrow(()->new IllegalOperationException("invalid user name or password"));
+		
 	}
 
 
