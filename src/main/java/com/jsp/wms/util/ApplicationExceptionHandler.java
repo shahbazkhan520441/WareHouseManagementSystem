@@ -1,14 +1,14 @@
 package com.jsp.wms.util;
 
 import org.springframework.http.HttpStatus;
+import com.jsp.wms.exception.AdminNotFoundByIdException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.exception.AdminNotFoundByEmail;
 import com.jsp.wms.exception.IllegalOperationException;
-import com.jsp.wms.exception.AdminNotFoundByIdException;
-
+import com.jsp.wms.exception.AddresNotFoundByIdException;
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 	private ResponseEntity<ErrorStructure<String>> errorResponse(HttpStatus status,String message,String rootCause){
@@ -33,6 +33,10 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler 
    	public ResponseEntity<ErrorStructure<String>>  AdminNotFoundByIdException(AdminNotFoundByIdException  ex){
    	return errorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), "admin not found by given email");	
+   	}
+    @ExceptionHandler 
+   	public ResponseEntity<ErrorStructure<String>>  AddresNotFoundByIdException(AddresNotFoundByIdException  ex){
+   	return errorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), "address not found by given id");	
    	}
     
 }
