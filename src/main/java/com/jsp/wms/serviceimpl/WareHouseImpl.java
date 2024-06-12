@@ -83,7 +83,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 					                                      .setMessage("warehouses found")
 					                                      .setData(listofwarehouseresponse));
 		}
-	
-		}
+	}
 	
 	
