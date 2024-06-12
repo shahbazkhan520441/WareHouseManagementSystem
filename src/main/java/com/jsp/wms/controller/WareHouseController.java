@@ -1,5 +1,7 @@
 package com.jsp.wms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,4 +39,9 @@ public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWareHouse(@Req
 public ResponseEntity<ResponseStructure<WareHouseResponse>> findWareHouse(@PathVariable Integer wareHouseId){
 	return wareHouseService.findWareHouse(wareHouseId);
 }
+@GetMapping("/warehouses")
+public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouses(){
+	return wareHouseService.findWareHouses();
+}
+
 }

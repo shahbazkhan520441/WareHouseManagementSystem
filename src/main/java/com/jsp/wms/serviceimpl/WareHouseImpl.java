@@ -1,8 +1,9 @@
 	package com.jsp.wms.serviceimpl;
 	
 	import java.util.Collection;
-	
-	import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.http.HttpStatus;
 	import org.springframework.http.ResponseEntity;
 	import org.springframework.security.core.Authentication;
@@ -62,7 +63,7 @@
 							.setStatus(HttpStatus.OK.value())
 							.setMessage("warehouse updated")
 							.setData(wareHouseMapper.mapTowareHouseResponse(exwareHouse)));
-			
+		
 			}).orElseThrow(()->new WarehouseNotFoundByIdException("warehouse not found by given id") );
 			}
 		@Override
@@ -73,6 +74,14 @@
 					                                                		  .setMessage("warehouse found by given id")
 					                                                		  .setData(wareHouseMapper.mapTowareHouseResponse(wareHouse))
 					                                                		  )).orElseThrow(()-> new WarehouseNotFoundByIdException("invalid id"));
+		}
+		@Override
+		public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouses() {
+			List<WareHouseResponse> listofwarehouseresponse = wareHouseRepository.findAll().stream().map(warehouse-> wareHouseMapper.mapTowareHouseResponse(warehouse)).toList();
+			return ResponseEntity.status(HttpStatus.FOUND).body(new ResponseStructure<List<WareHouseResponse>>()
+					                                      .setStatus(HttpStatus.FOUND.value())
+					                                      .setMessage("warehouses found")
+					                                      .setData(listofwarehouseresponse));
 		}
 	
 		}
