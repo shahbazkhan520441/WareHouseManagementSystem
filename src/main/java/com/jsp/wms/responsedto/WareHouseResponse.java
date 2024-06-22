@@ -1,5 +1,8 @@
 package com.jsp.wms.responsedto;
 
+import java.util.List;
+
+import com.jsp.wms.entity.Address;
 import com.jsp.wms.enums.AdminType;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +17,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class WareHouseResponse {
-	private int wareHouseId;
+	private Integer wareHouseId;
 	private String wareHouseName;
-	private int totalCapacity;
+	private double totalCapacity;
+	
+	private AddressResponse address;
 }
