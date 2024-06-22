@@ -1,5 +1,8 @@
 package com.jsp.wms.entity;
 
+import java.util.List;
+
+import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,11 +25,12 @@ public class WareHouse {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer wareHouseId;
 	private String wareHouseName;
-	private Integer totalCapcity;
+	private double totalCapacityInKg;
+	private double totalCapcity;
 	
 	@OneToOne
 	private Admin admin;
-	@OneToMany
-	private Storage storage;
+	@OneToMany(mappedBy = "wareHouse")
+	private List<Storage> storages;
 
 }

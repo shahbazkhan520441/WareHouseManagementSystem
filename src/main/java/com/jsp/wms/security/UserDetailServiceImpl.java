@@ -16,6 +16,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//		return adminRepository.findByEmail(username).map(admin -> {
+//		return new UserDetailImpl(admin);
+//	}).orElseThrow(() -> new UsernameNotFoundException("Invalid Credencial"));
 		return adminrepository.findByAdminEmail(username)
 				.map(UserDetailImpl::new)
 				.orElseThrow(() -> new UsernameNotFoundException("user not found"));

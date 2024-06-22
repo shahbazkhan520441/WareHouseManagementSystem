@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jsp.wms.entity.WareHouse;
 import com.jsp.wms.requestdto.WareHouseRequest;
+import com.jsp.wms.responsedto.AddressResponse;
 import com.jsp.wms.responsedto.WareHouseResponse;
 import com.jsp.wms.service.WareHouseService;
 import com.jsp.wms.util.ResponseStructure;
@@ -42,6 +43,18 @@ public ResponseEntity<ResponseStructure<WareHouseResponse>> findWareHouse(@PathV
 @GetMapping("/warehouses")
 public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouses(){
 	return wareHouseService.findWareHouses();
+}
+@GetMapping("clients/cities/{CityName}/warehouses")
+public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouseByCityforClient(@PathVariable String CityName){
+	return wareHouseService.findWareHouseByCity(CityName);
+}
+@GetMapping("/cities/{CityName}/warehouses")
+public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouseByCityforAdmin(@PathVariable String CityName){
+	return wareHouseService.findWareHouseByCity(CityName);
+}
+@GetMapping("/warehouse1")
+public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouseWithNoAdmins(){
+	return wareHouseService.findWareHouseWithNoAdmins();
 }
 
 }
