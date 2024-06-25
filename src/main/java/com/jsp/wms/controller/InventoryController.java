@@ -40,12 +40,21 @@ public class InventoryController {
     	return inventoryService.updateStock(storageId,inventoryId,storageId);
     }
     
-    
+ 
+    @PutMapping("/inventories/{inventoryId}")
+    public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(
+            @Valid @RequestBody InventoryRequest inventoryRequest,
+            @Valid @PathVariable Integer inventoryId) {
+        return inventoryService.updateInventory(inventoryRequest, inventoryId);
+    }
+
 
     //--------------------------------------------------------------------------------------------------------------------
     @GetMapping("/inventories/{inventoryId}")
-    public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(
+    public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory( updateinventory
             @Valid @PathVariable Integer inventoryId) {
+            
+
         return inventoryService.findInventory(inventoryId);
     }
     //--------------------------------------------------------------------------------------------------------------------

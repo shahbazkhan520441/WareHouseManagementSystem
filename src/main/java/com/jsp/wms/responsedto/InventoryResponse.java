@@ -15,7 +15,9 @@ import com.jsp.wms.enums.MaterialTypes;
 @NoArgsConstructor
 @Builder
 public class InventoryResponse {
+
     private Integer inventoryId;
+
     private String productTitle;
     private Double lengthInMeters;
     private Double breadthInMeters;

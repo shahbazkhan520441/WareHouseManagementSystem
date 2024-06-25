@@ -18,7 +18,7 @@ import com.jsp.wms.repository.StockRepository;
 import com.jsp.wms.repository.StorageRepository;
 import com.jsp.wms.requestdto.InventoryRequest;
 import com.jsp.wms.responsedto.InventoryResponse;
-import com.jsp.wms.responsedto.StockResponse;
+
 import com.jsp.wms.service.InventoryService;
 import com.jsp.wms.util.ResponseStructure;
 
@@ -26,8 +26,7 @@ import jakarta.validation.Valid;
 
 import com.jsp.wms.exception.ClientNotExistException;
 import com.jsp.wms.exception.InventoryNotExistException;
-import com.jsp.wms.exception.SpaceOrWeightNotAvailableException;
-import com.jsp.wms.exception.StorageNotFoundByIdException;
+
 import com.jsp.wms.exception.StorageTypeNotExistException;
 
 import java.time.LocalDate;
@@ -151,15 +150,10 @@ public class InventoryServiceImpl implements InventoryService {
 
     
     //--------------------------------------------------------------------------------------------------------------------
-    @Override
-    public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(Integer inventoryId) {
-        return inventoryRepository.findById(inventoryId).map(inventory -> {
-            return ResponseEntity.status(HttpStatus.FOUND).body(new ResponseStructure<InventoryResponse>()
-                    .setStatus(HttpStatus.FOUND.value())
-                    .setMessage("Inventory Founded")
-                    .setData(inventoryMapper.mapInventoryToInventoryResponse(inventory)));
-        }).orElseThrow(() -> new InventoryNotExistException("InventoryId : " + inventoryId + ", is not exist"));
-    }
+
+
+    //--------------------------------------------------------------------------------------------------------------------
+
 
     //--------------------------------------------------------------------------------------------------------------------
     @Override
@@ -175,6 +169,7 @@ public class InventoryServiceImpl implements InventoryService {
                 .setData(inventoryResponses));
     }
     //--------------------------------------------------------------------------------------------------------------------
+
 
 
 	@Override
@@ -195,6 +190,7 @@ public class InventoryServiceImpl implements InventoryService {
 				.body(new ResponseStructure<StockResponse>().setData(stockMapper.mapToStockResponse(stock))
 						.setStatus(HttpStatus.FOUND.value()).setMessage("Inventories Found"));
 	}
+
 
 
 }
