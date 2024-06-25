@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PurcahseOrdersRequest {
-	private double orderQuantity;
+public class PurchaseOrdersRequest {
+	private Integer orderQuantity;
 	private String invoiceLink;
-	private Integer CustomerId;
+	private Integer customerId;
 }

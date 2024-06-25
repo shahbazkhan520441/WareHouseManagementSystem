@@ -19,7 +19,7 @@ import com.jsp.wms.enums.MaterialTypes;
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long inventoryId;
+    private Integer inventoryId;
     private String productTitle;
     private double lengthInMeters;
     private double breadthInMeters;

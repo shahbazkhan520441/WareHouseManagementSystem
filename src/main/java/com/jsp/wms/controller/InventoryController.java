@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.jsp.wms.requestdto.InventoryRequest;
 import com.jsp.wms.responsedto.InventoryResponse;
+import com.jsp.wms.responsedto.StockResponse;
 import com.jsp.wms.service.InventoryService;
 import com.jsp.wms.util.ResponseStructure;
 
@@ -28,17 +29,23 @@ public class InventoryController {
     }
 
     //--------------------------------------------------------------------------------------------------------------------
-    @PutMapping("/inventories/{inventoryId}")
-    public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(
-            @Valid @RequestBody InventoryRequest inventoryRequest,
-            @Valid @PathVariable Long inventoryId) {
-        return inventoryService.updateInventory(inventoryRequest, inventoryId);
+
+    @PutMapping("/storages/{storageId}/inventories/{inventoryId}")
+    public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(InventoryRequest inventoryRequest,
+			Integer storageId, Integer inventoryId){
+    	return inventoryService.updateInventory(inventoryRequest, inventoryId,storageId);
     }
+    @PutMapping("/storages/{storageId}/stocks/stockQuantity/inventories/{inventoryId}")
+    public ResponseEntity<ResponseStructure<StockResponse>> updateStock(Integer storageId, Integer inventoryId, Integer stockQuantity){
+    	return inventoryService.updateStock(storageId,inventoryId,storageId);
+    }
+    
+    
 
     //--------------------------------------------------------------------------------------------------------------------
     @GetMapping("/inventories/{inventoryId}")
     public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(
-            @Valid @PathVariable Long inventoryId) {
+            @Valid @PathVariable Integer inventoryId) {
         return inventoryService.findInventory(inventoryId);
     }
     //--------------------------------------------------------------------------------------------------------------------

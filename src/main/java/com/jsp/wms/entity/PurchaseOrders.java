@@ -26,9 +26,9 @@ public class PurchaseOrders {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private Integer purchaseOrderId;
-	 private double orderQuantity;
+	 private Integer orderQuantity;
 	 private String invoiceLink;
-	 private Integer CustomerId;
+	 private Integer customerId;
 	 @ManyToMany
 	 List<Inventory> inventory;
 

@@ -18,6 +18,7 @@ import com.jsp.wms.repository.StockRepository;
 import com.jsp.wms.repository.StorageRepository;
 import com.jsp.wms.requestdto.InventoryRequest;
 import com.jsp.wms.responsedto.InventoryResponse;
+import com.jsp.wms.responsedto.StockResponse;
 import com.jsp.wms.service.InventoryService;
 import com.jsp.wms.util.ResponseStructure;
 
@@ -25,6 +26,8 @@ import jakarta.validation.Valid;
 
 import com.jsp.wms.exception.ClientNotExistException;
 import com.jsp.wms.exception.InventoryNotExistException;
+import com.jsp.wms.exception.SpaceOrWeightNotAvailableException;
+import com.jsp.wms.exception.StorageNotFoundByIdException;
 import com.jsp.wms.exception.StorageTypeNotExistException;
 
 import java.time.LocalDate;
@@ -88,42 +91,68 @@ public class InventoryServiceImpl implements InventoryService {
         }).orElseThrow(() -> new StorageTypeNotExistException("StorageId : " + storageId + ", is not exist"));
     }
 
-    //--------------------------------------------------------------------------------------------------------------------
-//    @Override
-//    public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(InventoryRequest inventoryRequest, Long inventoryId) {
-//        return inventoryRepository.findById(inventoryId).map(inventory -> {
-//            inventory = inventoryMapper.mapInventoryRequestToInventory(inventoryRequest, inventory);
-//
-////            List<Storage> listStorages = getUpdatedStorages(inventory);
-////            inventory.setStorages(listStorages);
-//            inventory = inventoryRepository.save(inventory);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseStructure<InventoryResponse>()
-//                    .setStatus(HttpStatus.CREATED.value())
-//                    .setMessage("Inventory Updated")
-//                    .setData(inventoryMapper.mapInventoryToInventoryResponse(inventory)));
-//        }).orElseThrow(() -> new InventoryNotExistException("InventoryId : " + inventoryId + ", is not exist"));
-//    }
-//
-//    private static List<Storage> getUpdatedStorages(Inventory inventory) {
-//        double productSize = inventory.getBreadthInMeters() * inventory.getHeightInMeters() * inventory.getLengthInMeters();
-//        double qnt = inventory.getQuantity();
-//
-//        double maxWeight = inventory.getWeightInKg() * inventory.getQuantity();
-//
-//////        List<Storage> listStorages = inventory.getStorages();
-////        listStorages.forEach(storage -> {
-////            double updatedStorageArea = storage.getAvailabelArea() - (productSize * qnt);
-////            storage.setAvailabelArea(updatedStorageArea);
-////
-////            double updatedStorageMaxWeight = storage.getMaxAdditionalWeight() - maxWeight;
-////            storage.setMaxAdditionalWeight(updatedStorageMaxWeight);
-////        });
-////        return listStorages;
-//    }
 
+    @Override
+	public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(InventoryRequest inventoryRequest,
+			Integer storageId, Integer inventoryId) {
+
+		return inventoryRepository.findById(inventoryId).map(inventory -> {
+
+			Storage storage = storageRepository.findById(storageId)
+					.orElseThrow(() -> new StorageNotFoundByIdException("Storage not Found"));
+
+			List<Stock> stocks = stockRepository.findByInventoryAndStorage(inventory, storage);
+
+//			if(inventory.getLengthInMeters() != inventoryRequest.getLengthInMeters()) 
+			int totalQuantity = 0;
+			for(Stock stock : stocks) {
+				totalQuantity += stock.getStockQuantity();
+			}
+
+			double oldWeight = inventory.getWeightInKg();
+			double oldLength = inventory.getLengthInMeters();
+			double oldBreadth = inventory.getBreadthInMeters();
+			double oldHeight = inventory.getHeightInMeters();
+
+			double originalWeight = oldWeight * totalQuantity;
+			double originalArea = oldBreadth * oldHeight + oldLength;
+
+			inventoryMapper.mapInventoryRequestToInventory(inventoryRequest, inventory);
+
+//			 if(oldQuantity != stock.getQuantity())
+//			   inventory.setRestockedAt(LocalDate.now());
+
+			double newWeight = inventory.getWeightInKg() * totalQuantity;
+			double newArea = inventory.getBreadthInMeters() * inventory.getHeightInMeters()
+					* inventory.getLengthInMeters();
+
+			if (oldLength != inventory.getLengthInMeters() || oldBreadth != inventory.getBreadthInMeters()
+					|| oldHeight != inventory.getHeightInMeters() || oldWeight != inventory.getWeightInKg()) {
+				if (storage.getAvailabelArea() > 0 && storage.getMaxAdditionalWeight() > 0) {
+					storage.setMaxAdditionalWeight(storage.getMaxAdditionalWeight() + (originalWeight - newWeight));
+					storage.setAvailabelArea(storage.getAvailabelArea() + (originalArea - newArea));
+				}
+                 else
+					throw new SpaceOrWeightNotAvailableException("No Available Area or Capacity of Storage Full");
+
+			}
+
+			inventory = inventoryRepository.save(inventory);
+			storageRepository.save(storage);
+
+		return	 ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseStructure<InventoryResponse>()
+							.setData(inventoryMapper.mapInventoryToInventoryResponse(inventory))
+							.setMessage("Inventory updated")
+							.setStatus(HttpStatus.OK.value()));
+
+			}).orElseThrow(() -> new InventoryNotExistException("Inventory not found"));
+	}
+
+    
     //--------------------------------------------------------------------------------------------------------------------
     @Override
-    public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(Long inventoryId) {
+    public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(Integer inventoryId) {
         return inventoryRepository.findById(inventoryId).map(inventory -> {
             return ResponseEntity.status(HttpStatus.FOUND).body(new ResponseStructure<InventoryResponse>()
                     .setStatus(HttpStatus.FOUND.value())
@@ -147,11 +176,25 @@ public class InventoryServiceImpl implements InventoryService {
     }
     //--------------------------------------------------------------------------------------------------------------------
 
+
 	@Override
-	public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(
-			@Valid InventoryRequest inventoryRequest, @Valid Long inventoryId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<ResponseStructure<StockResponse>> updateStock(Integer storageId,Integer inventoryId, Integer stockQuantity) {
+
+		 Storage storage = storageRepository.findById(storageId)
+				.orElseThrow(() -> new StorageNotFoundByIdException("Storage not Found"));
+		Inventory inventory = inventoryRepository.findById(inventoryId)
+				.orElseThrow(() -> new InventoryNotExistException("Inventory not Found"));
+
+		Stock stock = new Stock();
+		stock.setStockQuantity(stockQuantity);
+		stock.setInventory(inventory);
+		stock.setStorage(storage);
+		stockRepository.save(stock);
+
+		return ResponseEntity.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<StockResponse>().setData(stockMapper.mapToStockResponse(stock))
+						.setStatus(HttpStatus.FOUND.value()).setMessage("Inventories Found"));
 	}
+
 
 }

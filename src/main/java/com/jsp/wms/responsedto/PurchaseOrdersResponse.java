@@ -16,9 +16,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PurcahseOrdersResponse {
+public class PurchaseOrdersResponse {
 	private Integer purchaseOrderId;
-	private double orderQuantity;
+	private Integer orderQuantity;
 	private String invoiceLink;
-	private Integer CustomerId;
+	private Integer customerId;
 }
