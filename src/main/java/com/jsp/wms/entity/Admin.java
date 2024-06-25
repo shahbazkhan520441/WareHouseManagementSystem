@@ -25,7 +25,7 @@ import lombok.Setter;
 public class Admin {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private int adminId;
+private Integer adminId;
 private String adminName;
 private String adminEmail;
 private String adminPassword;
