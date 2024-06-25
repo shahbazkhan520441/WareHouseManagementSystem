@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.wms.requestdto.WareHouseRequest;
+import com.jsp.wms.responsedto.AddressResponse;
 import com.jsp.wms.responsedto.WareHouseResponse;
 import com.jsp.wms.util.ResponseStructure;
 
@@ -18,5 +19,9 @@ public interface WareHouseService {
 	public ResponseEntity<ResponseStructure<WareHouseResponse>> findWareHouse(Integer wareHouseId);
 
 	public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouses();
+
+	public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWareHouseByCity(String cityName);
+
+	ResponseEntity<ResponseStructure<List<WareHouseResponse>>>  findWareHouseWithNoAdmins();
 
 }

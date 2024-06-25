@@ -30,9 +30,10 @@ public class AddressMapper {
 		 .country(address.getCountry())
 		 .longitude(address.getLongitude())
 		 .latitude(address.getLatitude())
-		 .wareHouse(address.getWareHouse())
 		 .build();
 	}
+	
+	
 	
 
 }

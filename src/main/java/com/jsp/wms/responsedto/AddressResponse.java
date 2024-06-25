@@ -1,8 +1,5 @@
 package com.jsp.wms.responsedto;
 
-import com.jsp.wms.entity.WareHouse;
-import com.jsp.wms.enums.AdminType;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +20,5 @@ public class AddressResponse {
 	private Integer pincode;
 	private String longitude;
 	private String latitude;
-	
-	private WareHouse wareHouse;
+
 }

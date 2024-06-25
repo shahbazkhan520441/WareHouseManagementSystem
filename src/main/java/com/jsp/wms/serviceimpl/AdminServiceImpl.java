@@ -21,6 +21,7 @@ import com.jsp.wms.exception.AdminNotFoundByIdException;
 import com.jsp.wms.exception.IllegalOperationException;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.mapper.AdminMapper;
+import com.jsp.wms.mapper.StorageMapper;
 import com.jsp.wms.mapper.WareHouseMapper;
 import com.jsp.wms.repository.Repository;
 import com.jsp.wms.repository.WareHouseRepository;
@@ -134,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
 	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAllAdmin( ) {
 		
 
-		List<AdminResponse> adminList = adminRepository.findAll().stream().map(admin-> adminMapper.mapToAdminResponse(admin)).toList();
+		List<AdminResponse> adminList = adminRepository.findAll().stream().map(adminMapper::mapToAdminResponse).toList();
 		return ResponseEntity.status(HttpStatus.FOUND)
 		  .body(new ResponseStructure<List<AdminResponse>>()
 				  .setStatus(HttpStatus.OK.value())

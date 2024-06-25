@@ -19,5 +19,6 @@ public class AdminResponse {
 	private String AdminEmail;
 	private AdminType adminType;
 	
+	
 
 }
